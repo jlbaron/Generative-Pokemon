@@ -1,0 +1,6 @@
+epochs: 10
+batch_size: 32
+lr: 0.001
+beta1: 0.5
+latent_vector: 100
+model_name: pokemon_generator
