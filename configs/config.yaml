@@ -1,6 +1,15 @@
-epochs: 10
-batch_size: 32
+# model and meta params
+epochs: 20
+batch_size: 16
 lr: 0.001
 beta1: 0.5
-latent_vector: 100
 model_name: pokemon_generator
+
+# size of latent vector z (generator input)
+nz: 100
+# size of feature maps in generator
+ngf: 64
+# likewise for discriminator
+ndf: 64
+# channels
+nc: 3
