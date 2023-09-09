@@ -41,15 +41,15 @@ def view_image_samples(idx=0):
     plt.imshow(transformed_image.permute(1, 2, 0))
     plt.savefig('visualizations\\transformed_samples\\'+image_name)
 
-# for i in range(50):
-#     view_image_samples(i)
 
-def convert_jpg_to_png(directory):
-    for filename in os.listdir(directory):
-        if filename.endswith(".jpg"):
-            img = Image.open(os.path.join(directory, filename))
-            png_filename = os.path.splitext(filename)[0] + ".png"
-            img.save(os.path.join(directory, png_filename))
-            # img.show()
-
-convert_jpg_to_png('data\\images')
+# had to use an outside tool to remove background from jpg images
+# stored results in a folder and used this to rename (Thanks Zyro)
+def move_converted_files():
+    names = [file for file in os.listdir("visualizations\\convert_me")]
+    for i in range(len(names)):
+        old_file_name = f"visualizations\\converted\\zyro-image ({i}).png"
+        name = names[i]
+        new_file_name = f"visualizations\\converted_images\\{name[:-4]}.png"
+        img = Image.open(old_file_name)
+        img.save(new_file_name)
+# move_converted_files()
