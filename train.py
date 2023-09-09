@@ -1,6 +1,6 @@
 import os
-import yaml
 import random
+from utils import read_config
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, random_split
@@ -25,14 +25,14 @@ def plot_curves(train_losses, val_losses):
     plt.plot(train_losses, label="Training Loss")
     plt.plot(val_losses, label="Validation Loss")
     plt.title("Training and Validation Loss")
-    plt.xlabel("Epochs")
+    plt.xlabel("Iterations")
     plt.ylabel("Loss")
     plt.savefig("visualizations\\training_plots\\loss.png")
     plt.show()
 
 def plot_imgs(img_list, real_batch, device):
     # create GIF
-    fig = plt.figure(figsize=(8, 8))
+    fig = plt.figure(figsize=(6, 6))
     plt.axis("off")
     ims = [[plt.imshow(np.transpose(i, (1,2,0)), animated=True)] for i in img_list]
     ani = animation.ArtistAnimation(fig, ims, interval=1000, repeat_delay=1000, blit=True)
@@ -41,7 +41,7 @@ def plot_imgs(img_list, real_batch, device):
     plt.show()
 
     # Plot the real images
-    plt.figure(figsize=(15,15))
+    plt.figure(figsize=(8,4))
     plt.subplot(1,2,1)
     plt.axis("off")
     plt.title("Real Images")
@@ -54,11 +54,6 @@ def plot_imgs(img_list, real_batch, device):
     plt.imshow(np.transpose(img_list[-1],(1,2,0)))
     plt.savefig("visualizations\\Real_vs_Fake.png")
     plt.show()
-
-def read_config(file_path):
-    with open(file_path, 'r') as f:
-        config = yaml.safe_load(f)
-    return config
 
 def weights_init(m):
     classname = m.__class__.__name__
@@ -76,9 +71,9 @@ def main():
     dataloader = DataLoader(full_dataset, batch_size=config['batch_size'], shuffle=True)
 
     # Define your model
-    generator = Generator(nz=config['nz'], ngf=config['ngf'], nc=config['nc'])
+    generator = Generator(nz=config['nz'], ngf=config['ngf'], nc=config['nc'], device=device)
     generator.apply(weights_init)
-    discriminator = Discriminator(nc=config['nc'], ndf=config['ndf'])
+    discriminator = Discriminator(nc=config['nc'], ndf=config['ndf'], device=device)
     discriminator.apply(weights_init)
 
     # Binary loss with options [real (1), fake (0)]
@@ -174,7 +169,6 @@ def main():
     # plot curves and create animation
     plot_curves(gen_losses, dis_losses)
     real_batch = next(iter(dataloader))
-    print(real_batch.shape)
     plot_imgs(img_list, real_batch, device)
 
 if __name__ == '__main__':

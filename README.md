@@ -23,6 +23,9 @@ Simple deep generative adversarial network following PyTorch tutorial. The gener
 
 ![Arbok After](visualizations/transformed_samples/arbok.png)
 
+<p> Model then produces 64x64x3 "fakes" from noise to get new generated pokemon </p>
+
+![Fake](generated_samples/sample(0).png)
 
 <h3> Usage </h3>
 
@@ -30,4 +33,12 @@ Simple deep generative adversarial network following PyTorch tutorial. The gener
 python train.py
 ```
 
-TODO: add inference to make image
+```shell
+python inference.py
+```
+ - [OPTIONS]
+    - --config
+    - --random
+    - --gen-file
+    - --image-name
+    - --image-count
